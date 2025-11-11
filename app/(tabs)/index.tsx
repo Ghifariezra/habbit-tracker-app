@@ -1,98 +1,134 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from "react";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
+import { View, Text } from "react-native";
+import { Button } from "react-native-paper";
+import { HabbitsCard } from "@/components/common/cards/habbits";
+import { ScrollView, Swipeable } from "react-native-gesture-handler";
+import { SwipeCard } from "@/components/common/cards/swipe";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { labelFrequency } from "@/data/dropdown/frequency";
+import { FrequencyDropdown } from "@/components/common/dropdown/frequency";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function Index() {
+  const { handleSignOut, swapeableRef, handleDeleteHabbit, handleCompleteHabbit, isCompleted, filterHabbits, typeFrequency, setTypeFrequency } = useAuthContext();
 
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View className="flex-1 bg-white">
+      {/* Header */}
+      <View className="flex-row items-center justify-between w-full px-5 pt-10 pb-4 bg-white shadow-md">
+        <Text className="text-3xl font-bold text-gray-900">
+          Today&apos;s Habbits
+        </Text>
+        <Button
+          mode="text"
+          onPress={handleSignOut}
+          icon="logout"
+          textColor="#3b82f6"
+        >
+          Logout
+        </Button>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      {/* Filter */}
+      <View className="flex flex-row items-center justify-between gap-4 px-5 pt-8">
+        <View className="flex-1">
+          <Text className="text-lg font-semibold">
+            Frequency:
+          </Text>
+        </View>
+        <View className="flex-1 border border-gray-200 rounded-md">
+          <FrequencyDropdown
+            data={labelFrequency}
+            value={typeFrequency}
+            setValue={setTypeFrequency}
+          />
+        </View>
+      </View>
+
+      {/* Content */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, padding: 16 }}
+      >
+        {filterHabbits.length === 0 ? (
+          <View className="flex-1 items-center justify-center">
+            <View className="flex flex-col items-center gap-2">
+              <MaterialCommunityIcons name="emoticon-sad-outline" size={86} color="#666666" />
+              <Text className="text-center text-xl font-semibold text-gray-400">
+                No habbits found
+              </Text>
+            </View>
+          </View>
+        ) : (
+          filterHabbits.map((habbit) => (
+            <Swipeable
+              ref={(ref) => {
+                if (swapeableRef.current) {
+                  swapeableRef.current[habbit.$id] = ref;
+                }
+              }}
+              key={habbit.$id}
+              containerStyle={{
+                borderRadius: 16,
+              }}
+              overshootLeft={false}
+              overshootRight={false}
+              renderLeftActions={
+                () => (
+                  <SwipeCard
+                    className="bg-red-400 items-start"
+                  >
+                    <MaterialCommunityIcons name="trash-can-outline" size={32} color="#fff" />
+                  </SwipeCard>
+                )
+              }
+              renderRightActions={
+                () => {
+                  return (
+                    <>
+                      {isCompleted(habbit, habbit.$id) ? null : (
+                        <SwipeCard
+                          className="bg-green-400 items-end"
+                        >
+                          <MaterialCommunityIcons name="check" size={32} color="#fff" />
+                        </SwipeCard>
+                      )}
+                    </>
+                  )
+                }
+              }
+              onSwipeableOpen={(direction, swipeable) => {
+                if (direction === "left") handleDeleteHabbit(habbit.$id);
+                else if (direction === "right") {
+                  handleCompleteHabbit(habbit.$id);
+
+                  swipeable.close();
+                };
+              }}
+              // friction={2}
+              leftThreshold={50}
+              rightThreshold={50}
+            >
+              <View
+                style={{
+                  borderRadius: 16,
+                  backgroundColor: "#FFF",
+                  // opacity: isCompleted(habbit.$id) ? 0.4 : 1,
+                  marginBottom: 8,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 3 },
+                  shadowOpacity: 1,
+                  shadowRadius: 4,
+                  elevation: 3,
+                }}
+              >
+                <HabbitsCard habbits={habbit} completed={isCompleted(habbit, habbit.$id)} />
+              </View>
+            </Swipeable>
+          ))
+        )}
+      </ScrollView>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
