@@ -1,50 +1,89 @@
-# Welcome to your Expo app 👋
+# Habit Tracker App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplikasi mobile Habit Tracker dibuat menggunakan React Native, Expo, Tailwind CSS, Appwrite sebagai backend, dan react-native-gifted-charts untuk visualisasi data.
 
-## Get started
+Aplikasi ini dibuat sebagai portfolio pribadi sekaligus media belajar deployment aplikasi mobile.
 
-1. Install dependencies
+## Fitur Utama
 
-   ```bash
-   npm install
-   ```
+-   Menambahkan habit dengan frekuensi daily, weekly, dan monthly
+-   Menandai habit sebagai selesai sesuai frekuensi
+-   Submit tugas habit berdasarkan frekuensi
+-   Analisis habit berupa leaderboard rank, broken habits, dan total streak per kategori
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Struktur Folder
 
 ```bash
-npm run reset-project
+habbit-tracker-app/
+ ├─ .expo/
+ ├─ .vscode/
+ ├─ app/
+ ├─ app-example/
+ ├─ assets/
+ ├─ components/
+ ├─ data/
+ ├─ hooks/
+ ├─ lib/
+ ├─ node_modules/
+ ├─ services/
+ ├─ types/
+ └─ utils/
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Setup & Instalasi
 
-## Learn more
+### Prasyarat
 
-To learn more about developing your project with Expo, look at the following resources:
+-   Node.js dan pnpm sudah terinstall
+-   Expo CLI terinstall (pnpm add -g expo-cli atau npm install -g expo-cli)
+-   Akun Appwrite dan project Appwrite sudah dibuat
+-   Variabel environment Appwrite sudah disiapkan (lihat bagian Environment Variables)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Langkah Instalasi
 
-## Join the community
+1. Clone repository
+    ```bash
+    git clone <repo-url>
+    cd habbits-tracker
+    ```
+2. Install dependencies
+    ```bash
+    pnpm install
+    ```
+3. Buat file .env di root project dan isi variabel berikut (sesuaikan dengan project Appwrite kamu):
+    ```js
+    EXPO_PUBLIC_APPWRITE_PROJECT_ID=2D41DA98.........
+    EXPO_PUBLIC_APPWRITE_PROJECT_NAME="Habbit-Tracker-App"
+    EXPO_PUBLIC_APPWRITE_ENDPOINT=https://...
+    EXPO_PUBLIC_APPWRITE_PLATFORM=co...
+    EXPO_PUBLIC_APPWRITE_DATABASE_ID=253D9........
+    EXPO_PUBLIC_APPWRITE_COLLECTION_ID="habbits"
+    EXPO_PUBLIC_APPWRITE_COMPLETIONS_COLLECTION_ID="habbit_completions"
+    ```
+4. Jalankan aplikasi
+    ```bash
+    pnpm start:clear
+    ```
 
-Join our community of developers creating universal apps.
+## Tampilan Aplikasi
+### Autentikasi
+![auth](./assets/auth.png)
+- `AuthScreen` untuk login dan register menggunakan hook `useAuthContext`
+- Form input dengan `react-hook-form`
+- Switch mode Sign In / Sign Up
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Manajemen Habit
+![management-habit](./assets/post-habbits.png)
+- `AddHabitScreen` untuk menambah habit dengan validasi form
+- Hook `useHabbitScreen` mengatur logic form dan submit
+
+### Daftar Habit
+![list-habit](./assets/today-habbits.png)
+- `Index` screen menampilkan daftar habit dengan fitur swipe untuk hapus dan tandai selesai
+- Filter habit berdasarkan frekuensi
+- UI menggunakan komponen `HabbitsCard`
+
+### Analitik & Statistik
+![auth](./assets/streaks.png)
+- `StreaksScreen` menampilkan leaderboard, broken habits, dan total streak per kategori menggunakan `BarChartCategory` dari gifted-charts
+- Data diambil dari context `useAuthContext`
