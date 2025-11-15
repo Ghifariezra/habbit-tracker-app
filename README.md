@@ -66,24 +66,16 @@ habbit-tracker-app/
     ```
 
 ## Tampilan Aplikasi
-### Autentikasi
-<img src="./assets/auth.png" alt="auth" width="300"/> <br/>
-- `AuthScreen` untuk login dan register menggunakan hook `useAuthContext`
-- Form input dengan `react-hook-form`
-- Switch mode Sign In / Sign Up
 
-### Manajemen Habit
-<img src="./assets/post-habbits.png" alt="auth" width="300"/> <br/>
-- `AddHabitScreen` untuk menambah habit dengan validasi form
-- Hook `useHabbitScreen` mengatur logic form dan submit
-
-### Daftar Habit
-<img src="./assets/today-habbits.png" alt="auth" width="300"/> <br/>
-- `Index` screen menampilkan daftar habit dengan fitur swipe untuk hapus dan tandai selesai
-- Filter habit berdasarkan frekuensi
-- UI menggunakan komponen `HabbitsCard`
-
-### Analitik & Statistik
-<img src="./assets/streaks.png" alt="auth" width="300"/> <br/>
-- `StreaksScreen` menampilkan leaderboard, broken habits, dan total streak per kategori menggunakan `BarChartCategory` dari gifted-charts
-- Data diambil dari context `useAuthContext`
+| Tampilan                     | Deskripsi                                                                                  |
+|-----------------------------|--------------------------------------------------------------------------------------------|
+| <img src="./assets/auth.png" alt="auth" width="300"/>            | - `AuthScreen` untuk login dan register menggunakan hook `useAuthContext`  
+- Form input dengan `react-hook-form`  
+- Switch mode Sign In / Sign Up |
+| <img src="./assets/post-habbits.png" alt="manajemen habit" width="300"/> | - `AddHabitScreen` untuk menambah habit dengan validasi form  
+- Hook `useHabbitScreen` mengatur logic form dan submit                                |
+| <img src="./assets/today-habbits.png" alt="daftar habit" width="300"/>    | - `Index` screen menampilkan daftar habit dengan fitur swipe untuk hapus dan tandai selesai  
+- Filter habit berdasarkan frekuensi  
+- UI menggunakan komponen `HabbitsCard`                                       |
+| <img src="./assets/streaks.png" alt="analitik & statistik" width="300"/>   | - `StreaksScreen` menampilkan leaderboard, broken habits, dan total streak per kategori menggunakan `BarChartCategory` dari gifted-charts  
+- Data diambil dari context `useAuthContext`                                    |
