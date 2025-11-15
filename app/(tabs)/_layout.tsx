@@ -1,11 +1,15 @@
 import "@/app/global.css"
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Tabs } from "expo-router";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function RootLayout() {
+  const insets = useSafeAreaInsets();
+  // console.log(insets);
+ 
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={{ 
         // headerShown: false,
         headerStyle: {
           backgroundColor: "#f5f5f5",
@@ -15,10 +19,11 @@ export default function RootLayout() {
         tabBarStyle: {
           backgroundColor: "#fff",
           paddingTop: 8,
+          paddingBottom: insets.bottom,
           borderTopColor: "#f1f1f1",
           borderTopWidth: 1,
           elevation: 0,
-          shadowOpacity: 0,
+          shadowOpacity: 0
         },
         tabBarActiveTintColor: "#6262ee",
         tabBarInactiveTintColor: "#666666",

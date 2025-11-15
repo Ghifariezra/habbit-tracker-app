@@ -60,7 +60,7 @@ export default function Index() {
               </Text>
             </View>
           </View>
-        ) : (
+        ) : ( 
           filterHabbits.map((habbit) => (
             <Swipeable
               ref={(ref) => {
