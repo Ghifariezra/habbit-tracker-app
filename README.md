@@ -67,23 +67,23 @@ habbit-tracker-app/
 
 ## Tampilan Aplikasi
 ### Autentikasi
-![auth](./assets/auth.png)
+<img src="./assets/auth.png" alt="auth" width="300"/> <br/>
 - `AuthScreen` untuk login dan register menggunakan hook `useAuthContext`
 - Form input dengan `react-hook-form`
 - Switch mode Sign In / Sign Up
 
 ### Manajemen Habit
-![management-habit](./assets/post-habbits.png)
+<img src="./assets/post-habbits.png" alt="auth" width="300"/> <br/>
 - `AddHabitScreen` untuk menambah habit dengan validasi form
 - Hook `useHabbitScreen` mengatur logic form dan submit
 
 ### Daftar Habit
-![list-habit](./assets/today-habbits.png)
+<img src="./assets/today-habbits.png" alt="auth" width="300"/> <br/>
 - `Index` screen menampilkan daftar habit dengan fitur swipe untuk hapus dan tandai selesai
 - Filter habit berdasarkan frekuensi
 - UI menggunakan komponen `HabbitsCard`
 
 ### Analitik & Statistik
-![auth](./assets/streaks.png)
+<img src="./assets/streaks.png" alt="auth" width="300"/> <br/>
 - `StreaksScreen` menampilkan leaderboard, broken habits, dan total streak per kategori menggunakan `BarChartCategory` dari gifted-charts
 - Data diambil dari context `useAuthContext`
